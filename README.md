@@ -1,6 +1,8 @@
 # VisibleSimConfigGenerator
 
-Generate connected configurations for VisibleSim simulator. It is under development, all the announced functionalities have not been developed and tested yet...
+Generate connected configurations for VisibleSim simulator.
+
+Note: Configuration generation for Smart Blocks modular robot systems has not been implemented yet. 
 
 ### Compilation
 
@@ -19,7 +21,7 @@ VisibleSimConfigGenerator works as following:
 Usage: VisibleSimConfigGenerator -r <target robot system> -s <lattice size (2D or 3D)> -o <ouput xml file> -t <topology to generate> <topology parameter> [options]
 Supported target robot systems(<target robot system>): 
   bb: blinkyblocks
-  sb: smartblocks
+  sb: smartblocks (not supported yet)
   c2: catoms2d
   c3: catoms3d
 Lattice size format:
