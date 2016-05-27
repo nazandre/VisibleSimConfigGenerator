@@ -46,7 +46,7 @@ void Generator::generateRandom() {
   int seed = r();
   default_random_engine e1(seed);
 
-  cerr << "Generating random configuration of size " << n << "..." << endl;
+  cerr << "Generating a random configuration of size " << n << "..." << endl;
   
   node = new Node(id,middle);
   //cout << "insert at " << middle.x << " " << middle.y << " " << middle.z << endl; 
@@ -92,7 +92,7 @@ void Generator::generateBall() {
   Vector3D middle = configuration.getMiddle();
   Node *node = new Node(id,middle);
 
-  cerr << "Generating ball configuration of radius " << r << "..." << endl;
+  cerr << "Generating a ball configuration of radius " << r << "..." << endl;
   configuration.insert(node,middle);
   id++;
   // r rounds, add max possible number of neighbors at every existing module
@@ -115,8 +115,26 @@ void Generator::generateBall() {
 
 void Generator::generateLine() {
   int n = topology.parameter;
-  Utils::notImplementedYet();
-  cerr << "Generating line configuration of length " << n << "..." << endl;
+  int id = 1;
+  Node *node;
+  Vector3D position = configuration.getMiddle();
+  position.x = 0;
+ 
+  cerr << "Generating a line configuration of length " << n << "..." << endl;
+
+  node = new Node(id,position);
+  configuration.insert(node,position);
+  id++;
+  for (int i = 1; i < n; i++) {
+    position.x++;
+    if (!configuration.lattice->isIn(position)) {
+      cerr << "ERROR: Lattice too small to create an horizontal line of " << n << " modules!" << endl;
+      exit(EXIT_FAILURE);
+    }
+    node = new Node(id,position);
+    configuration.insert(node,position);
+    id++;
+  }
 }
 
 
@@ -125,7 +143,8 @@ void Generator::mixNodes(int p) {
   int seed = r();
   default_random_engine e1(seed);
   uniform_int_distribution<int> uniform_dist1(0, configuration.getSize()-1);
-  
+
+  // swap two nodes 
   for (int i = 0; i < p; i++) {
     int id1, id2;
     do {
