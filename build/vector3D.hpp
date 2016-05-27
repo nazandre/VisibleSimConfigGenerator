@@ -15,7 +15,10 @@ public:
   Vector3D(std::string &s, int v = 0);
   Vector3D(const Vector3D &v);
   ~Vector3D();
-  
+
+  std::string getString() const;
+  std::string getString2D() const;
+  std::string getString3D() const;
   //friend Vector3D operator+(const Vector3D &v); 
 };
 

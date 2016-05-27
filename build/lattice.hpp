@@ -50,7 +50,8 @@ public:
   Vector3D getMiddle();
 
   std::vector<Vector3D> getNeighborCells(Node *n);
-
+  
+  virtual std::string getString(Vector3D &p) = 0;
   virtual std::vector<Vector3D> getRelativeConnectivity(Vector3D &p) = 0;
 };
 
@@ -64,6 +65,7 @@ public:
   virtual ~Lattice2D();
 
   Dimension getDimension();
+  std::string getString(Vector3D &p);
   
   virtual std::vector<Vector3D> getRelativeConnectivity(Vector3D &p) = 0;
 };
@@ -78,6 +80,7 @@ public:
   virtual ~Lattice3D();
 
   Dimension getDimension();
+  std::string getString(Vector3D &p);
   
   virtual std::vector<Vector3D> getRelativeConnectivity(Vector3D &p) = 0;
 };

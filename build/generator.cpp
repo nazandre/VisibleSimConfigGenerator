@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define GENERATION_DEBUG
+//#define GENERATION_DEBUG
 
 Generator::Generator(Configuration &c, Topology t) : configuration(c),
 						     topology(t) {}
@@ -16,6 +16,11 @@ Generator::Generator(const Generator &g) :  configuration(g.configuration),
 Generator::~Generator() {}
 
 void Generator::generate() {
+
+#ifdef GENERATION_DEBUG
+  cout << "grid: " << configuration.lattice->size << endl;
+#endif
+  
   switch(topology.type) {
   case RANDOM_TOPOLOGY:
     generateRandom();
@@ -127,6 +132,9 @@ void Generator::generateLine() {
   id++;
   for (int i = 1; i < n; i++) {
     position.x++;
+#ifdef GENERATION_DEBUG
+    cout << "insert at " << position << "..." << endl;
+#endif
     if (!configuration.lattice->isIn(position)) {
       cerr << "ERROR: Lattice too small to create an horizontal line of " << n << " modules!" << endl;
       exit(EXIT_FAILURE);

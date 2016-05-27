@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include "utils.hpp"
 #include "configuration.hpp"
 
 using namespace std;
@@ -17,7 +18,6 @@ Configuration::Configuration(Robot &r, Vector3D &s) {
 Configuration::Configuration(const Configuration &c) {
   cerr << "ERROR: Configuration copy constructor not properly implemented!" << endl;
   exit(EXIT_FAILURE);
-  
   robot = c.robot;
   lattice = NULL; // TODO
   //instantiateLattice();
@@ -73,10 +73,11 @@ void Configuration::createLattice(Vector3D& s) {
     lattice = new SCLattice(s);
     break;
   case(SMART_BLOCKS_ROBOT) :
-    lattice = new HLattice(s);
+    //lattice = new SCLattice(s);
+    Utils::notImplementedYet("SMART BLOCKS configuration generations...!");
     break;
   case(CATOMS2D_ROBOT) :
-    lattice = new SCLattice(s);
+    lattice = new HLattice(s);
     break;
   case(CATOMS3D_ROBOT) :
     lattice = new FCCLattice(s);
@@ -87,8 +88,8 @@ void Configuration::createLattice(Vector3D& s) {
 }
 
 ostream& Configuration::exportToVisibleSim(ostream &output) {
-  Dimension dimension = lattice->getDimension();
-  Vector3D &robotSize = Robot::typeSize[robot.type];
+  Vector3D &robotVSFormatSize = Robot::typeVSFormatSize[robot.type];
+  Vector3D &robotCompFormatSize = Robot::typeCompFormatSize[robot.type];
   Vector3D &latticeSize = lattice->size;
   Vector3D &defaultColor = Robot::defaultColor[robot.type];
   
@@ -97,7 +98,7 @@ ostream& Configuration::exportToVisibleSim(ostream &output) {
   int angleElevation = 25;
   double coef = 115./100.;
 
-  Vector3D sceneSize = robotSize * latticeSize;
+  Vector3D sceneSize = robotCompFormatSize * latticeSize;
   Vector3D midPoint = sceneSize/2;
   
   int distance = max(max(sceneSize.x, sceneSize.y), sceneSize.z)*coef;
@@ -107,33 +108,22 @@ ostream& Configuration::exportToVisibleSim(ostream &output) {
   output << "<?xml version=\"1.0\" standalone=\"no\" ?>" << endl;
   
   // header
-  if (dimension == TWO_D_DIMENSION) {
-    output << "<world gridSize=\"" << lattice->size.x << "," << lattice->size.y << "\">" << endl;
-  } else if (dimension == THREE_D_DIMENSION) {
-    output << "<world gridSize=\"" << lattice->size.x << "," << lattice->size.y << "," << lattice->size.z << "\">" << endl;
-  }
-  
-  output << "<camera target=\"" << midPoint.x <<"," << midPoint.y << "," << midPoint.z << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"45\"/>" << endl;
-  output << "<spotlight target=\"" << midPoint.x << "," <<  midPoint.y << "," << midPoint.z << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"30\"/>" << endl;
+  output << "<world gridSize=\"" << lattice->getString(latticeSize) << "\">" << endl;
+  output << "<camera target=\"" << midPoint.getString3D() << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"45\"/>" << endl;
+  output << "<spotlight target=\"" << midPoint.getString3D() << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"30\"/>" << endl;
   
   // module list
   output << "<blockList color=\""
-	 << defaultColor.x << "," << defaultColor.y << "," << defaultColor.z
+	 << defaultColor.getString3D()
 	 << "\" blocksize=\""
-	 << robotSize.x << "," << robotSize.y << "," << robotSize.z
+	 << robotVSFormatSize.getString3D()
 	 << "\">" << endl;
   for (int i = 0; i < getSize(); i++) {
-    Vector3D &p = nodes[i]->position; 
-    if (dimension == TWO_D_DIMENSION) {
+    Vector3D &p = nodes[i]->position;
       output << "<block position=\""
-	     << p.x << "," << p.y
+	     << lattice->getString(p)
 	     << "\"/>" << endl;
 	//<< "color=\"" << p << "\"/>" << endl;
-    } else if (dimension == THREE_D_DIMENSION) {
-      output << "<block position=\""
-	     << p.x << "," << p.y << "," << p.z
-	     << "\"/>" << endl;
-    } 
   }
   output << "</blockList>" << endl;
   output << "</world>" << endl;

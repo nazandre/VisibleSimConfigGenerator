@@ -36,8 +36,20 @@ Vector3D::Vector3D(const Vector3D &v) {
 
 Vector3D::~Vector3D() {}
 
+string Vector3D::getString() const {
+  return getString3D();
+}
+
+string Vector3D::getString2D() const {
+  return to_string(x) + "," + to_string(y);
+}
+
+string Vector3D::getString3D() const {
+  return to_string(x) + "," + to_string(y) + "," + to_string(z);
+}
+
 std::ostream& operator<<(std::ostream &os, const Vector3D &v) {
-  os << "(" << v.x << "," << v.y << "," << v.z << ")";
+  os << "(" << v.getString() << ")";
   return os;
 }
 

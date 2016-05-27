@@ -17,7 +17,6 @@ class Robot {
 
 public:
   RobotType type;
-  Vector3D size;
   
   Robot();
   Robot(RobotType t);
@@ -26,7 +25,8 @@ public:
   
   static std::string typeShortName[];
   static std::string typeFullName[];
-  static Vector3D typeSize[];
+  static Vector3D typeVSFormatSize[];
+  static Vector3D typeCompFormatSize[];
   static Vector3D defaultColor[];
   
   static RobotType getType(std::string t);

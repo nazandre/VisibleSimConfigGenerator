@@ -99,6 +99,10 @@ Dimension Lattice2D::getDimension() {
   return TWO_D_DIMENSION;
 }
 
+string Lattice2D::getString(Vector3D &p) {
+  return p.getString2D();
+}
+
 /****** 3D Lattice Class ******/
 
 Lattice3D::Lattice3D() : Lattice() {}
@@ -108,6 +112,10 @@ Lattice3D::~Lattice3D() {}
 
 Dimension Lattice3D::getDimension() {
   return THREE_D_DIMENSION;
+}
+
+string Lattice3D::getString(Vector3D &p) {
+  return p.getString3D();
 }
 
 /****** Hexgonal Lattice Class ******/
