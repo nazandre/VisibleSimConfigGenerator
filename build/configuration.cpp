@@ -109,23 +109,23 @@ ostream& Configuration::exportToVisibleSim(ostream &output) {
   
   // header
   output << "<world gridSize=\"" << lattice->getString(latticeSize) << "\">" << endl;
-  output << "<camera target=\"" << midPoint.getString3D() << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"45\"/>" << endl;
-  output << "<spotlight target=\"" << midPoint.getString3D() << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"30\"/>" << endl;
+  output << "  <camera target=\"" << midPoint.getString3D() << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"45\"/>" << endl;
+  output << "  <spotlight target=\"" << midPoint.getString3D() << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"30\"/>" << endl;
   
   // module list
-  output << "<blockList color=\""
+  output << "  <blockList color=\""
 	 << defaultColor.getString3D()
 	 << "\" blocksize=\""
 	 << robotVSFormatSize.getString3D()
 	 << "\">" << endl;
   for (int i = 0; i < getSize(); i++) {
     Vector3D &p = nodes[i]->position;
-      output << "<block position=\""
+      output << "    <block position=\""
 	     << lattice->getString(p)
 	     << "\"/>" << endl;
 	//<< "color=\"" << p << "\"/>" << endl;
   }
-  output << "</blockList>" << endl;
+  output << "  </blockList>" << endl;
   output << "</world>" << endl;
   return output;
 }
