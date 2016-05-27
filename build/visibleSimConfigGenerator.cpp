@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   cerr << "Output: " << arguments.output << endl;
 
   // Create Configuration
-  Vector3D size(arguments.size);
+  Vector3D size(arguments.size,1);
   Robot robot(Robot::getType(arguments.robot));
   Configuration configuration(robot,size);
 

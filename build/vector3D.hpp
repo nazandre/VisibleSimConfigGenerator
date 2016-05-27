@@ -12,7 +12,7 @@ public:
 
   Vector3D();
   Vector3D(int _x, int _y, int _z);
-  Vector3D(std::string &s);
+  Vector3D(std::string &s, int v = 0);
   Vector3D(const Vector3D &v);
   ~Vector3D();
   

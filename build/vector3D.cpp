@@ -12,14 +12,14 @@ Vector3D::Vector3D(int _x, int _y, int _z) {
   z = _z;
 }
 
-Vector3D::Vector3D(string &s) {
+Vector3D::Vector3D(string &s, int v) {
   size_t coma1 = s.find_first_of(",");
   size_t coma2 = s.find_last_of(",");
   if (coma1 == coma2) {
     // 2D:
     x = stoi(s.substr(0,coma1));
     y = stoi(s.substr(coma1+1));
-    z = 0;
+    z = v;
   } else {
     // 3D:
     x = stoi(s.substr(0,coma1));

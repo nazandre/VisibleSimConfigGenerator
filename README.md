@@ -25,7 +25,7 @@ Supported target robot systems(<target robot system>):
 Lattice size format:
   "x,y" for 2D configurations
   "x,y,z" for 3D configurations
-Supported topology (<topology to generate>): 
+Supported topologies (<topology to generate>): 
   r: random (parameter: size)
   b: networkball (parameter: radius)
   l: line (parameter: length)

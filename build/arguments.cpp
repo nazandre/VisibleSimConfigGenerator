@@ -67,7 +67,7 @@ Arguments::Arguments(int argc, char *argv[]) {
   }
   TopologyType topologyType = Topology::getType(topology);
   if (topologyType == UNKNOWN_TOPOLOGY) {
-    cerr << "ERROR: Unknown topology type " << robot << endl;
+    cerr << "ERROR: Unknown topology type " << topology << endl;
     help();
   }
 
@@ -143,7 +143,7 @@ void Arguments::help() {
   cerr << "  \"x,y\" for 2D configurations" << endl;
   cerr << "  \"x,y,z\" for 3D configurations" << endl;
   
-  cerr << "Supported topology (<topology to generate>): " << endl;
+  cerr << "Supported topologies (<topology to generate>): " << endl;
   for (int i = 0; i < NUM_TOPOLOGIES; i++) {
     cerr << "  " << Topology::typeShortName[i]
 	 << ": " << Topology::typeFullName[i]

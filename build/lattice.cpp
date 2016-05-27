@@ -19,6 +19,11 @@ Lattice::Lattice() {
 Lattice::Lattice(Vector3D &s, LatticeType t) {
   type = t;
   size = s;
+  if (size.x == 0 ||
+      size.y == 0 ||
+      size.z == 0) {
+    cerr << "ERROR: Incorrect lattice size (size in any direction can not be null)." << endl;
+  }
   grid = new Node*[size.x*size.y*size.z]{NULL};
 }
 
@@ -83,15 +88,35 @@ vector<Vector3D> Lattice::getNeighborCells(Node *n) {
   return l;
 }
 
-/****** Hexgonal Lattice Class ******/
+/****** 2D Lattice Class ******/
 
-HLattice::HLattice() {}
+Lattice2D::Lattice2D() : Lattice() {}
+Lattice2D::Lattice2D(Vector3D& s, LatticeType t) : Lattice(s,t) {}
+Lattice2D::Lattice2D(const Lattice2D &l) : Lattice(l) {}
+Lattice2D::~Lattice2D() {}
 
-HLattice::HLattice(Vector3D& s) : Lattice(s, HEXAGONAL_LATTICE) {
-  size.z = 1; // 2D lattices ...
+Dimension Lattice2D::getDimension() {
+  return TWO_D_DIMENSION;
 }
 
-HLattice::HLattice(const HLattice &l) : Lattice(l) {}
+/****** 3D Lattice Class ******/
+
+Lattice3D::Lattice3D() : Lattice() {}
+Lattice3D::Lattice3D(Vector3D& s, LatticeType t) : Lattice(s,t) {}
+Lattice3D::Lattice3D(const Lattice2D &l) : Lattice(l) {}
+Lattice3D::~Lattice3D() {}
+
+Dimension Lattice3D::getDimension() {
+  return THREE_D_DIMENSION;
+}
+
+/****** Hexgonal Lattice Class ******/
+
+HLattice::HLattice() : Lattice2D() {}
+
+HLattice::HLattice(Vector3D& s) : Lattice2D(s, HEXAGONAL_LATTICE) {}
+
+HLattice::HLattice(const HLattice &l) : Lattice2D(l) {}
 
 HLattice::~HLattice() {}
 
@@ -115,15 +140,11 @@ vector<Vector3D> HLattice::getRelativeConnectivity(Vector3D &p) {
   return nCells;
 }
 
-Dimension HLattice::getDimension() {
-  return TWO_D_DIMENSION;
-}
-
 /****** Simple Cubic Lattice Class ******/
 
-SCLattice::SCLattice() {}
+SCLattice::SCLattice() : Lattice3D() {}
 
-SCLattice::SCLattice(Vector3D& s) : Lattice(s, SIMPLE_CUBIC_LATTICE) {
+SCLattice::SCLattice(Vector3D& s) : Lattice3D(s, SIMPLE_CUBIC_LATTICE) {
   nCells.push_back(Vector3D(1,0,0));
   nCells.push_back(Vector3D(-1,0,0));
   nCells.push_back(Vector3D(0,0,1));
@@ -132,16 +153,11 @@ SCLattice::SCLattice(Vector3D& s) : Lattice(s, SIMPLE_CUBIC_LATTICE) {
   nCells.push_back(Vector3D(0,-1,0));
 }
 
-SCLattice::SCLattice(const SCLattice &l) : Lattice(l) {
+SCLattice::SCLattice(const SCLattice &l) : Lattice3D(l) {
   nCells = l.nCells;
 }
 
-SCLattice::~SCLattice() {
-}
-
-Dimension SCLattice::getDimension() {
-  return THREE_D_DIMENSION;
-}
+SCLattice::~SCLattice() {}
 
 vector<Vector3D> SCLattice::getRelativeConnectivity(Vector3D &p) {
   return nCells;
@@ -149,22 +165,18 @@ vector<Vector3D> SCLattice::getRelativeConnectivity(Vector3D &p) {
 
 /****** Face-Centered Cubic Lattice Class ******/
 
-FCCLattice::FCCLattice() {}
+FCCLattice::FCCLattice() : Lattice3D() {}
 
-FCCLattice::FCCLattice(Vector3D& s) : Lattice(s, SIMPLE_CUBIC_LATTICE) {}
+FCCLattice::FCCLattice(Vector3D& s) : Lattice3D(s, SIMPLE_CUBIC_LATTICE) {}
 
-FCCLattice::FCCLattice(const FCCLattice &l) : Lattice(l) {}
+FCCLattice::FCCLattice(const FCCLattice &l) : Lattice3D(l) {}
 
 FCCLattice::~FCCLattice() {}
-
-Dimension FCCLattice::getDimension() {
-  return THREE_D_DIMENSION;
-}
 
 vector<Vector3D> FCCLattice::getRelativeConnectivity(Vector3D &p) {
   vector<Vector3D> nCells;
   
-  if (EVEN(p.z)) {
+  if (ODD(p.z)) {
     // z + 1
     nCells.push_back(Vector3D(-1,-1,1));
     nCells.push_back(Vector3D(-1,0,1));

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-//#define GENERATION_DEBUG
+#define GENERATION_DEBUG
 
 Generator::Generator(Configuration &c, Topology t) : configuration(c),
 						     topology(t) {}
@@ -39,7 +39,6 @@ void Generator::generateRandom() {
   int id = 1;
   int n = topology.parameter;
   Vector3D middle = configuration.getMiddle();
-  Vector3D position;
   Node *node;
   bool inserted;
   // Uniformly-distributed integer random number generator that produces non-deterministic random numbers. 
@@ -71,9 +70,10 @@ void Generator::generateRandom() {
 #endif
       uniform_int_distribution<int> uniform_dist2(0, positions.size()-1);
       int rnc = uniform_dist2(e1);
-      position = positions[rnc];
+      Vector3D& position = positions[rnc];
 #ifdef GENERATION_DEBUG
-      cout << "Insert at " << position << endl;
+      cout << "Insert "<< i <<  " at " << position << endl;
+      cout << endl;
 #endif
       if (configuration.isFree(position)) {
 	node = new Node(id,position);
@@ -87,8 +87,30 @@ void Generator::generateRandom() {
 
 void Generator::generateBall() {
   int r = topology.parameter;
-  Utils::notImplementedYet();
+  int id = 1;
+  //Utils::notImplementedYet();
+  Vector3D middle = configuration.getMiddle();
+  Node *node = new Node(id,middle);
+
   cerr << "Generating ball configuration of radius " << r << "..." << endl;
+  configuration.insert(node,middle);
+  id++;
+  // r rounds, add max possible number of neighbors at every existing module
+  for (int i = 0; i < r; i++) {
+    int currentSize = configuration.getSize();
+    for (int j = 0; j < currentSize; j++) {
+      node = configuration.getNode(j);
+      vector<Vector3D> positions = configuration.getNeighborCells(node);
+      for (int k = 0; k < (int)positions.size(); k++) {
+	Vector3D &position = positions[k];
+	if (configuration.isFree(position)) {
+	  node = new Node(id,position);
+	  configuration.insert(node,position);
+	  id++;
+	}
+      }
+    }
+  }
 }
 
 void Generator::generateLine() {

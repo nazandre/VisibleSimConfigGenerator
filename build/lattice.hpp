@@ -54,8 +54,36 @@ public:
   virtual std::vector<Vector3D> getRelativeConnectivity(Vector3D &p) = 0;
 };
 
+// 2D Lattice
+class Lattice2D : public Lattice {
+
+public:
+  Lattice2D();
+  Lattice2D(Vector3D& s, LatticeType t);
+  Lattice2D(const Lattice2D &l);
+  virtual ~Lattice2D();
+
+  Dimension getDimension();
+  
+  virtual std::vector<Vector3D> getRelativeConnectivity(Vector3D &p) = 0;
+};
+
+// 3D Lattice
+class Lattice3D : public Lattice {
+
+public:
+  Lattice3D();
+  Lattice3D(Vector3D& s, LatticeType t);
+  Lattice3D(const Lattice2D &l);
+  virtual ~Lattice3D();
+
+  Dimension getDimension();
+  
+  virtual std::vector<Vector3D> getRelativeConnectivity(Vector3D &p) = 0;
+};
+
 // Hexgaonal (H) Lattice
-class HLattice : public Lattice {
+class HLattice : public Lattice2D {
 
 public:
   HLattice();
@@ -63,13 +91,11 @@ public:
   HLattice(const HLattice &l);
   ~HLattice();
 
-  Dimension getDimension();
-  
   std::vector<Vector3D> getRelativeConnectivity(Vector3D &p);
 };
 
 // Simple Cubic (SC) Lattice (okay for Square (S) Lattice as well)
-class SCLattice : public Lattice {
+class SCLattice : public Lattice3D {
 
 public:
   std::vector<Vector3D> nCells;
@@ -78,14 +104,12 @@ public:
   SCLattice(Vector3D& s);
   SCLattice(const SCLattice &l);
   ~SCLattice();
-
-  Dimension getDimension();
   
   std::vector<Vector3D> getRelativeConnectivity(Vector3D &p);
 };
 
 // Face-Centered Cubic (FCC) Lattice
-class FCCLattice : public Lattice {
+class FCCLattice : public Lattice3D {
 
 public:
   
@@ -93,8 +117,6 @@ public:
   FCCLattice(Vector3D& s);
   FCCLattice(const FCCLattice &l);
   ~FCCLattice();
-
-  Dimension getDimension();
   
   std::vector<Vector3D> getRelativeConnectivity(Vector3D &p);
 };
