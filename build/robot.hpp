@@ -30,6 +30,10 @@ public:
   static Vector3D defaultColor[];
   
   static RobotType getType(std::string t);
+
+  Vector3D& getTypeVSFormatSize();
+  Vector3D& getTypeCompFormatSize();
+  Vector3D& getDefaultColor();
 };
 
 #endif

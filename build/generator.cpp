@@ -2,6 +2,7 @@
 #include <random>
 #include "generator.hpp"
 #include "utils.hpp"
+#include "color.hpp"
 
 using namespace std;
 
@@ -43,6 +44,7 @@ void Generator::generate() {
 void Generator::generateRandom() {
   int id = 1;
   int n = topology.parameter;
+  Vector3D &defaultColor = configuration.robot.getDefaultColor();
   Vector3D middle = configuration.getMiddle();
   Node *node;
   bool inserted;
@@ -53,7 +55,7 @@ void Generator::generateRandom() {
 
   cerr << "Generating a random configuration of size " << n << "..." << endl;
   
-  node = new Node(id,middle);
+  node = new Node(id,middle,defaultColor);
   //cout << "insert at " << middle.x << " " << middle.y << " " << middle.z << endl; 
   configuration.insert(node,middle);
   id++;
@@ -81,7 +83,7 @@ void Generator::generateRandom() {
       cout << endl;
 #endif
       if (configuration.isFree(position)) {
-	node = new Node(id,position);
+	node = new Node(id,position,defaultColor);
 	configuration.insert(node,position);
 	id++;
 	inserted = true;
@@ -95,7 +97,7 @@ void Generator::generateBall() {
   int id = 1;
   //Utils::notImplementedYet();
   Vector3D middle = configuration.getMiddle();
-  Node *node = new Node(id,middle);
+  Node *node = new Node(id,middle,Color::getColor(color(0)));
 
   cerr << "Generating a ball configuration of radius " << r << "..." << endl;
   configuration.insert(node,middle);
@@ -109,7 +111,7 @@ void Generator::generateBall() {
       for (int k = 0; k < (int)positions.size(); k++) {
 	Vector3D &position = positions[k];
 	if (configuration.isFree(position)) {
-	  node = new Node(id,position);
+	  node = new Node(id,position,Color::getColor(color((i+1)%NUM_COLORS)));
 	  configuration.insert(node,position);
 	  id++;
 	}
@@ -120,14 +122,16 @@ void Generator::generateBall() {
 
 void Generator::generateLine() {
   int n = topology.parameter;
+  Vector3D &defaultColor = configuration.robot.getDefaultColor();
   int id = 1;
   Node *node;
   Vector3D position = configuration.getMiddle();
+  
   position.x = 0;
  
   cerr << "Generating a line configuration of length " << n << "..." << endl;
 
-  node = new Node(id,position);
+  node = new Node(id,position,defaultColor);
   configuration.insert(node,position);
   id++;
   for (int i = 1; i < n; i++) {
@@ -139,7 +143,7 @@ void Generator::generateLine() {
       cerr << "ERROR: Lattice too small to create an horizontal line of " << n << " modules!" << endl;
       exit(EXIT_FAILURE);
     }
-    node = new Node(id,position);
+    node = new Node(id,position,defaultColor);
     configuration.insert(node,position);
     id++;
   }

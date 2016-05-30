@@ -1,4 +1,5 @@
 #include "robot.hpp"
+#include "color.hpp"
 
 using namespace std;
 
@@ -8,14 +9,11 @@ using namespace std;
 #define C2_COMP_FORMAT_SIZE Vector3D(1,1,1)
 #define C3_SIZE Vector3D(10,10,10)
 
-#define GREEN Vector3D(0,255,0)
-#define GRAY Vector3D(100,100,100)
-
 string Robot::typeShortName[] = {"bb", "sb", "c2", "c3"};
 string Robot::typeFullName[] = {"blinkyblocks", "smartblocks (not supported yet)", "catoms2d", "catoms3d"};
 Vector3D Robot::typeVSFormatSize[] = {BB_SIZE, SB_SIZE, C2_VS_FORMAT_SIZE, C3_SIZE};
 Vector3D Robot::typeCompFormatSize[] = {BB_SIZE, SB_SIZE, C2_COMP_FORMAT_SIZE, C3_SIZE};
-Vector3D Robot::defaultColor[] = {GREEN, GRAY, GRAY, GRAY};
+Vector3D Robot::defaultColor[] = {GREEN_COLOR, GRAY_COLOR, GRAY_COLOR, GRAY_COLOR};
 
 Robot::Robot() {}
 
@@ -36,4 +34,16 @@ RobotType Robot::getType(std::string t) {
     }
   }
   return UNKNOWN_ROBOT;
+}
+
+Vector3D&  Robot::getTypeVSFormatSize() {
+  return typeVSFormatSize[type];
+}
+
+Vector3D&  Robot::getTypeCompFormatSize() {
+  return typeCompFormatSize[type];
+}
+
+Vector3D&  Robot::getDefaultColor() {
+  return defaultColor[type];
 }

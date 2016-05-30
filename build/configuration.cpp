@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "utils.hpp"
 #include "configuration.hpp"
+#include "color.hpp"
 
 using namespace std;
 
@@ -88,10 +89,10 @@ void Configuration::createLattice(Vector3D& s) {
 }
 
 ostream& Configuration::exportToVisibleSim(ostream &output) {
-  Vector3D &robotVSFormatSize = Robot::typeVSFormatSize[robot.type];
-  Vector3D &robotCompFormatSize = Robot::typeCompFormatSize[robot.type];
+  Vector3D &robotVSFormatSize = robot.getTypeVSFormatSize();
+  Vector3D &robotCompFormatSize = robot.getTypeCompFormatSize();
   Vector3D &latticeSize = lattice->size;
-  Vector3D &defaultColor = Robot::defaultColor[robot.type];
+  Vector3D &defaultColor = robot.getDefaultColor();
   
   //target(angle azimut,angle elevation, distance) 
   int angleAzimut = 0;
@@ -101,7 +102,7 @@ ostream& Configuration::exportToVisibleSim(ostream &output) {
   Vector3D sceneSize = robotCompFormatSize * latticeSize;
   Vector3D midPoint = sceneSize/2;
   
-  int distance = max(max(sceneSize.x, sceneSize.y), sceneSize.z)*coef;
+  int distance = max(max(sceneSize.x, sceneSize.y), sceneSize.z+midPoint.z)*coef;
   
   cerr << "exporting to VisibleSim..." << endl;
 
@@ -120,10 +121,15 @@ ostream& Configuration::exportToVisibleSim(ostream &output) {
 	 << "\">" << endl;
   for (int i = 0; i < getSize(); i++) {
     Vector3D &p = nodes[i]->position;
-      output << "    <block position=\""
-	     << lattice->getString(p)
-	     << "\"/>" << endl;
-	//<< "color=\"" << p << "\"/>" << endl;
+
+    //if (p.z != 3 && p.z != 1) { continue; }
+    //if (p.z != 2) {continue;}
+    //if (p.z != 1) {continue;}
+    //if (p.z != 0) {continue;}
+
+    output << "    <block position=\"" << lattice->getString(p) << "\""
+	   << " color=\"" << nodes[i]->color.getString3D() << "\""
+	   << "/>" << endl;
   }
   output << "  </blockList>" << endl;
   output << "</world>" << endl;
