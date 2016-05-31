@@ -8,12 +8,14 @@ using namespace std;
 
 Configuration::Configuration() {
   lattice = NULL;
+  colored = false;
 }
 
-Configuration::Configuration(Robot &r, Vector3D &s) {
+Configuration::Configuration(Robot &r, Vector3D &s, bool c) {
   robot = r;
   lattice = NULL;
   createLattice(s);
+  colored = c;
 }
 
 Configuration::Configuration(const Configuration &c) {
@@ -22,6 +24,7 @@ Configuration::Configuration(const Configuration &c) {
   robot = c.robot;
   lattice = NULL; // TODO
   //instantiateLattice();
+  colored = c.colored;
 }
 
 Configuration::~Configuration() {

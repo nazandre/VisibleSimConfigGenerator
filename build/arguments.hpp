@@ -11,6 +11,7 @@ public:
   std::string topology;
   std::string parameter;
   std::string size;
+  bool colored;
   
   Arguments();
   Arguments(int argc, char *argv[]);

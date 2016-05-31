@@ -11,6 +11,8 @@ Arguments::Arguments() {}
 
 Arguments::Arguments(int argc, char *argv[]) {
 
+  colored = false;
+  
   argv++;
   argc--;
 
@@ -39,6 +41,9 @@ Arguments::Arguments(int argc, char *argv[]) {
       size = argv[1];
       argc--;
       argv++;
+      break;
+    case 'c':
+      colored = true;
       break;
     case 'h':
       help();
@@ -124,6 +129,7 @@ Arguments::Arguments(const Arguments &a) {
   topology = a.topology;
   parameter = a.parameter;
   size = a.size;
+  colored = a.colored;
 }
 
 Arguments::~Arguments() { }
@@ -149,7 +155,7 @@ void Arguments::help() {
   }
 
   cerr <<"Options:" << endl;
+  cerr <<"-c: enable color" << endl;
   cerr <<"-h: print this usage and exit" << endl;
-
   exit(EXIT_SUCCESS);
 } 

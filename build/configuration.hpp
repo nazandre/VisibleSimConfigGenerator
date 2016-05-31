@@ -15,9 +15,10 @@ public:
   Robot robot;
   std::vector<Node*> nodes; 
   Lattice *lattice;
+  bool colored;
 
   Configuration();
-  Configuration(Robot &r, Vector3D& s);
+  Configuration(Robot &r, Vector3D& s, bool c);
   Configuration(const Configuration &c);
   ~Configuration();
 

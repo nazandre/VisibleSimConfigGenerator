@@ -30,6 +30,7 @@ Supported topologies (<topology to generate>):
   b: networkball (parameter: radius)
   l: line (parameter: length)
 Options:
+-c: enable color
 -h: print this usage and exit
 ```
 
@@ -46,6 +47,7 @@ Target robot: blinkyblocks
 Topology: random, parameter: 30
 Lattice size: 10,10,10
 Output: example.xml
+Color: false
 Generating random configuration of size 30...
 Configuration with 30 modules generated!
 exporting to VisibleSim...

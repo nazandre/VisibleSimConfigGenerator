@@ -3,7 +3,7 @@ CFLAGS = -Wall -std=c++11
 EXEC_NAME = visibleSimConfigGenerator
 INCLUDES =
 LIBS = 
-OBJ_FILES = arguments.o node.o utils.o generator.o vector3D.o configuration.o robot.o topology.o lattice.o color.cpp visibleSimConfigGenerator.o
+OBJ_FILES = arguments.o node.o utils.o generator.o vector3D.o configuration.o robot.o topology.o lattice.o color.o visibleSimConfigGenerator.o
 
 all : $(EXEC_NAME)
 

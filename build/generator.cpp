@@ -45,6 +45,7 @@ void Generator::generateRandom() {
   int id = 1;
   int n = topology.parameter;
   Vector3D &defaultColor = configuration.robot.getDefaultColor();
+  Vector3D mColor = defaultColor;
   Vector3D middle = configuration.getMiddle();
   Node *node;
   bool inserted;
@@ -54,8 +55,11 @@ void Generator::generateRandom() {
   default_random_engine e1(seed);
 
   cerr << "Generating a random configuration of size " << n << "..." << endl;
-  
-  node = new Node(id,middle,defaultColor);
+
+  if (configuration.colored) {
+    mColor = Color::getRandom();
+  }
+  node = new Node(id,middle,mColor);
   //cout << "insert at " << middle.x << " " << middle.y << " " << middle.z << endl; 
   configuration.insert(node,middle);
   id++;
@@ -83,7 +87,10 @@ void Generator::generateRandom() {
       cout << endl;
 #endif
       if (configuration.isFree(position)) {
-	node = new Node(id,position,defaultColor);
+	if (configuration.colored) {
+	  mColor = Color::getRandom();
+	}
+	node = new Node(id,position,mColor);
 	configuration.insert(node,position);
 	id++;
 	inserted = true;
@@ -95,9 +102,14 @@ void Generator::generateRandom() {
 void Generator::generateBall() {
   int r = topology.parameter;
   int id = 1;
-  //Utils::notImplementedYet();
   Vector3D middle = configuration.getMiddle();
-  Node *node = new Node(id,middle,Color::getColor(color(0)));
+  Vector3D &defaultColor = configuration.robot.getDefaultColor();
+  Vector3D mColor = defaultColor;
+
+  if (configuration.colored) {
+    mColor = Color::getColor(color(0));
+  }
+  Node *node = new Node(id,middle,mColor);
 
   cerr << "Generating a ball configuration of radius " << r << "..." << endl;
   configuration.insert(node,middle);
@@ -105,13 +117,16 @@ void Generator::generateBall() {
   // r rounds, add max possible number of neighbors at every existing module
   for (int i = 0; i < r; i++) {
     int currentSize = configuration.getSize();
+    if (configuration.colored) {
+      mColor = Color::getColor(color((i+1)%NUM_COLORS));
+    }
     for (int j = 0; j < currentSize; j++) {
       node = configuration.getNode(j);
       vector<Vector3D> positions = configuration.getNeighborCells(node);
       for (int k = 0; k < (int)positions.size(); k++) {
 	Vector3D &position = positions[k];
 	if (configuration.isFree(position)) {
-	  node = new Node(id,position,Color::getColor(color((i+1)%NUM_COLORS)));
+	  node = new Node(id,position,mColor);
 	  configuration.insert(node,position);
 	  id++;
 	}
@@ -123,6 +138,7 @@ void Generator::generateBall() {
 void Generator::generateLine() {
   int n = topology.parameter;
   Vector3D &defaultColor = configuration.robot.getDefaultColor();
+  Vector3D mColor = defaultColor;
   int id = 1;
   Node *node;
   Vector3D position = configuration.getMiddle();
@@ -131,7 +147,10 @@ void Generator::generateLine() {
  
   cerr << "Generating a line configuration of length " << n << "..." << endl;
 
-  node = new Node(id,position,defaultColor);
+  if (configuration.colored) {
+    mColor = Color::getRandom();
+  }
+  node = new Node(id,position,mColor);
   configuration.insert(node,position);
   id++;
   for (int i = 1; i < n; i++) {
@@ -143,7 +162,10 @@ void Generator::generateLine() {
       cerr << "ERROR: Lattice too small to create an horizontal line of " << n << " modules!" << endl;
       exit(EXIT_FAILURE);
     }
-    node = new Node(id,position,defaultColor);
+    if (configuration.colored) {
+      mColor = Color::getRandom();
+    }
+    node = new Node(id,position,mColor);
     configuration.insert(node,position);
     id++;
   }

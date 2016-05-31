@@ -17,11 +17,12 @@ int main(int argc, char *argv[]) {
   cerr << ", parameter: " << arguments.parameter << endl;
   cerr << "Lattice size: " << arguments.size << endl;
   cerr << "Output: " << arguments.output << endl;
-
+  cerr << "Color: " << boolalpha << arguments.colored << noboolalpha << endl;
+  
   // Create Configuration
   Vector3D size(arguments.size,1);
   Robot robot(Robot::getType(arguments.robot));
-  Configuration configuration(robot,size);
+  Configuration configuration(robot,size,arguments.colored);
 
   // Generate configuration topology
   int parameter = stoi(arguments.parameter);
