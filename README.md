@@ -1,6 +1,6 @@
 # VisibleSimConfigGenerator
 
-Generate connected configurations for VisibleSim simulator.
+Generate connected configurations for [VisibleSim simulator](http://projects.femto-st.fr/projet-visiblesim/).
 
 ### Compilation
 
