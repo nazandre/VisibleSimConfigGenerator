@@ -72,15 +72,13 @@ Arguments::Arguments(int argc, char *argv[]) {
   }
 
   if (output == "") {
-    cerr << "WARNING: No ouput file specified."
-	 << "Will export the configuration in ? "
-	 << endl;
+    cerr << "ERROR: No ouput file specified." << endl;
+    help();
   }
 
   if (size == "") {
-    cerr << "WARNING: No lattice size specified."
-	 << "Will use automatically computed values."
-	 << endl;
+    cerr << "ERROR: No lattice size specified." << endl;
+    help();
   }
   
   /*
@@ -150,10 +148,7 @@ void Arguments::help() {
 	 << " (parameter: " << Topology::parameterName[i] << ")"<< endl;
   }
 
-  
-  
   cerr <<"Options:" << endl;
-  //cerr <<"-o <output aj file> : output file for GraphAnalyzer" << endl;
   cerr <<"-h: print this usage and exit" << endl;
 
   exit(EXIT_SUCCESS);

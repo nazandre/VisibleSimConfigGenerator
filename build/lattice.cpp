@@ -118,6 +118,27 @@ string Lattice3D::getString(Vector3D &p) {
   return p.getString3D();
 }
 
+/****** Square Lattice Class ******/
+
+SLattice::SLattice() : Lattice2D() {}
+
+SLattice::SLattice(Vector3D& s) : Lattice2D(s, SQUARE_LATTICE) {
+  nCells.push_back(Vector3D(1,0,0));
+  nCells.push_back(Vector3D(-1,0,0));
+  nCells.push_back(Vector3D(0,1,0));
+  nCells.push_back(Vector3D(0,-1,0));
+}
+
+SLattice::SLattice(const SLattice &l) : Lattice2D(l) {
+  nCells = l.nCells;
+}
+
+SLattice::~SLattice() {}
+
+vector<Vector3D> SLattice::getRelativeConnectivity(Vector3D &p) {
+  return nCells;
+}
+
 /****** Hexgonal Lattice Class ******/
 
 HLattice::HLattice() : Lattice2D() {}

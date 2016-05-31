@@ -10,7 +10,7 @@ using namespace std;
 #define C3_SIZE Vector3D(10,10,10)
 
 string Robot::typeShortName[] = {"bb", "sb", "c2", "c3"};
-string Robot::typeFullName[] = {"blinkyblocks", "smartblocks (not supported yet)", "catoms2d", "catoms3d"};
+string Robot::typeFullName[] = {"blinkyblocks", "smartblocks", "catoms2d", "catoms3d"};
 Vector3D Robot::typeVSFormatSize[] = {BB_SIZE, SB_SIZE, C2_VS_FORMAT_SIZE, C3_SIZE};
 Vector3D Robot::typeCompFormatSize[] = {BB_SIZE, SB_SIZE, C2_COMP_FORMAT_SIZE, C3_SIZE};
 Vector3D Robot::defaultColor[] = {GREEN_COLOR, GRAY_COLOR, GRAY_COLOR, GRAY_COLOR};

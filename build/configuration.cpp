@@ -17,7 +17,7 @@ Configuration::Configuration(Robot &r, Vector3D &s) {
 }
 
 Configuration::Configuration(const Configuration &c) {
-  cerr << "ERROR: Configuration copy constructor not properly implemented!" << endl;
+  cerr << "ERROR: Configuration copy constructor not yet properly implemented!" << endl;
   exit(EXIT_FAILURE);
   robot = c.robot;
   lattice = NULL; // TODO
@@ -61,7 +61,6 @@ void Configuration::swapNodes(int i, int j) {
   Node *tmpn = nodes[i];
   nodes[i] = nodes[j];
   nodes[j] = tmpn;
-
   /*
   int tmpi = nodes[i].id;
   nodes[i].id = nodes[j].id;
@@ -74,8 +73,7 @@ void Configuration::createLattice(Vector3D& s) {
     lattice = new SCLattice(s);
     break;
   case(SMART_BLOCKS_ROBOT) :
-    //lattice = new SCLattice(s);
-    Utils::notImplementedYet("SMART BLOCKS configuration generations...!");
+    lattice = new SLattice(s);
     break;
   case(CATOMS2D_ROBOT) :
     lattice = new HLattice(s);

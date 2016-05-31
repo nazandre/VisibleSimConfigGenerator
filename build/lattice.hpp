@@ -85,6 +85,18 @@ public:
   virtual std::vector<Vector3D> getRelativeConnectivity(Vector3D &p) = 0;
 };
 
+// Square (S) Lattice
+class SLattice : public Lattice2D {
+  std::vector<Vector3D> nCells;
+public:
+  SLattice();
+  SLattice(Vector3D& s);
+  SLattice(const SLattice &l);
+  ~SLattice();
+
+  std::vector<Vector3D> getRelativeConnectivity(Vector3D &p);
+};
+
 // Hexgaonal (H) Lattice
 class HLattice : public Lattice2D {
 
