@@ -60,6 +60,21 @@ vector<Vector3D> Configuration::getNeighborCells(Node *n) {
   return lattice->getNeighborCells(n);
 }
 
+vector<Vector3D> Configuration::getEmptyNeighborCells(Node *n) {
+  vector<Vector3D> neighborCells = getNeighborCells(n);
+  vector<Vector3D>::iterator it;
+
+  for (it = neighborCells.begin(); it != neighborCells.end();) {
+    if (!isFree(*it)) {
+      it=neighborCells.erase(it);
+    } else {
+      it++;
+    }
+  }
+  
+  return neighborCells;
+}
+
 void Configuration::swapNodes(int i, int j) {
   Node *tmpn = nodes[i];
   nodes[i] = nodes[j];

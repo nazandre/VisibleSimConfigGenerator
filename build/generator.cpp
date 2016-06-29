@@ -53,7 +53,8 @@ void Generator::generateRandom() {
   random_device r;
   int seed = r();
   default_random_engine e1(seed);
-
+  vector<Node*> freeNodes;
+  
   cerr << "Generating a random configuration of size " << n << "..." << endl;
 
   if (configuration.colored) {
@@ -62,16 +63,22 @@ void Generator::generateRandom() {
   node = new Node(id,middle,mColor);
   //cout << "insert at " << middle.x << " " << middle.y << " " << middle.z << endl; 
   configuration.insert(node,middle);
+  freeNodes.push_back(node);
   id++;
 
   for (int i = 0; i < n-1; i++) {
-    // Produces random integer values rid, uniformly distributed on the closed interval [0, i],
-    uniform_int_distribution<int> uniform_dist1(0, i);
     inserted = false;
     while(!inserted) {
+      if (freeNodes.size() == 0) {
+	cerr << "ERROR: Lattice not big enough to contain " << n << " modules!" << endl;
+	return;
+      }
+      // Produces random integer values rid, uniformly distributed on the closed interval [0, i],
+      uniform_int_distribution<int> uniform_dist1(0, freeNodes.size()-1);
       int rid = uniform_dist1(e1);
-      node = configuration.getNode(rid);
-      vector<Vector3D> positions = configuration.getNeighborCells(node);
+      node = freeNodes[rid];
+      //node = configuration.getNode(rid);
+      vector<Vector3D> positions = configuration.getEmptyNeighborCells(node);
 #ifdef GENERATION_DEBUG
       cout << "Neighbors of " << node->position << ":";
       for (int k = 0; k < (int)positions.size(); k++) {
@@ -79,6 +86,12 @@ void Generator::generateRandom() {
       }
       cout << endl;
 #endif
+      
+      if (positions.size() == 0) {
+	freeNodes.erase(freeNodes.begin()+rid);
+	continue;
+      }
+      
       uniform_int_distribution<int> uniform_dist2(0, positions.size()-1);
       int rnc = uniform_dist2(e1);
       Vector3D& position = positions[rnc];
@@ -92,6 +105,7 @@ void Generator::generateRandom() {
 	}
 	node = new Node(id,position,mColor);
 	configuration.insert(node,position);
+	freeNodes.push_back(node);
 	id++;
 	inserted = true;
       }

@@ -30,6 +30,7 @@ public:
   Vector3D getMiddle();
 
   std::vector<Vector3D> getNeighborCells(Node *n);
+  std::vector<Vector3D> getEmptyNeighborCells(Node *n);
   
   void swapNodes(int i, int j);
   
