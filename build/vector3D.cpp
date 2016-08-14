@@ -12,20 +12,12 @@ Vector3D::Vector3D(int _x, int _y, int _z) {
   z = _z;
 }
 
-Vector3D::Vector3D(string &s, int v) {
+Vector3D::Vector3D(string &s) {
   size_t coma1 = s.find_first_of(",");
   size_t coma2 = s.find_last_of(",");
-  if (coma1 == coma2) {
-    // 2D:
-    x = stoi(s.substr(0,coma1));
-    y = stoi(s.substr(coma1+1));
-    z = v;
-  } else {
-    // 3D:
-    x = stoi(s.substr(0,coma1));
-    y = stoi(s.substr(coma1+1,coma2-coma1-1));
-    z = stoi(s.substr(coma2+1));
-  }
+  x = stoi(s.substr(0,coma1));
+  y = stoi(s.substr(coma1+1,coma2-coma1-1));
+  z = stoi(s.substr(coma2+1));
 }
 
 Vector3D::Vector3D(const Vector3D &v) {
@@ -37,14 +29,6 @@ Vector3D::Vector3D(const Vector3D &v) {
 Vector3D::~Vector3D() {}
 
 string Vector3D::getString() const {
-  return getString3D();
-}
-
-string Vector3D::getString2D() const {
-  return to_string(x) + "," + to_string(y);
-}
-
-string Vector3D::getString3D() const {
   return to_string(x) + "," + to_string(y) + "," + to_string(z);
 }
 

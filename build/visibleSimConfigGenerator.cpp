@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   cerr << "Color: " << boolalpha << arguments.colored << noboolalpha << endl;
   
   // Create Configuration
-  Vector3D size(arguments.size,1);
+  Vector3D size(arguments.size);
   Robot robot(Robot::getType(arguments.robot));
   Configuration configuration(robot,size,arguments.colored);
 

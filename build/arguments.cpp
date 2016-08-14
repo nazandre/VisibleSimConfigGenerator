@@ -135,7 +135,7 @@ Arguments::Arguments(const Arguments &a) {
 Arguments::~Arguments() { }
 
 void Arguments::help() {
-  cerr << "Usage: VisibleSimConfigGenerator -r <target robot system> -s <lattice size (2D or 3D)> -o <ouput xml file> -t <topology to generate> <topology parameter> [options]"<< endl;
+  cerr << "Usage: VisibleSimConfigGenerator -r <target robot system> -s <lattice size (3D)> -o <ouput xml file> -t <topology to generate> <topology parameter> [options]"<< endl;
 
   cerr << "Supported target robot systems(<target robot system>): " << endl;
   for (int i = 0; i < NUM_ROBOTS; i++) {
@@ -144,8 +144,7 @@ void Arguments::help() {
   }
 
   cerr << "Lattice size format:" << endl;
-  cerr << "  \"x,y\" for 2D configurations" << endl;
-  cerr << "  \"x,y,z\" for 3D configurations" << endl;
+  cerr << "  \"x,y,z\"" << endl;
   
   cerr << "Supported topologies (<topology to generate>): " << endl;
   for (int i = 0; i < NUM_TOPOLOGIES; i++) {

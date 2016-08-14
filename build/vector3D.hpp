@@ -12,14 +12,11 @@ public:
 
   Vector3D();
   Vector3D(int _x, int _y, int _z);
-  Vector3D(std::string &s, int v = 0);
+  Vector3D(std::string &s);
   Vector3D(const Vector3D &v);
   ~Vector3D();
 
   std::string getString() const;
-  std::string getString2D() const;
-  std::string getString3D() const;
-  //friend Vector3D operator+(const Vector3D &v); 
 };
 
 std::ostream& operator<<(std::ostream &os, const Vector3D &v);

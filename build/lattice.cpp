@@ -99,10 +99,6 @@ Dimension Lattice2D::getDimension() {
   return TWO_D_DIMENSION;
 }
 
-string Lattice2D::getString(Vector3D &p) {
-  return p.getString2D();
-}
-
 /****** 3D Lattice Class ******/
 
 Lattice3D::Lattice3D() : Lattice() {}
@@ -112,10 +108,6 @@ Lattice3D::~Lattice3D() {}
 
 Dimension Lattice3D::getDimension() {
   return THREE_D_DIMENSION;
-}
-
-string Lattice3D::getString(Vector3D &p) {
-  return p.getString3D();
 }
 
 /****** Square Lattice Class ******/
@@ -139,7 +131,7 @@ vector<Vector3D> SLattice::getRelativeConnectivity(Vector3D &p) {
   return nCells;
 }
 
-/****** Hexgonal Lattice Class ******/
+/****** Vertical Hexgonal Lattice Class ******/
 
 HLattice::HLattice() : Lattice2D() {}
 
@@ -155,15 +147,15 @@ vector<Vector3D> HLattice::getRelativeConnectivity(Vector3D &p) {
   nCells.push_back(Vector3D(1,0,0));
   nCells.push_back(Vector3D(-1,0,0));
 
-  nCells.push_back(Vector3D(0,1,0));
-  nCells.push_back(Vector3D(0,-1,0));
+  nCells.push_back(Vector3D(0,0,1));
+  nCells.push_back(Vector3D(0,0,-1));
   
-  if (EVEN(p.y)) {
-    nCells.push_back(Vector3D(1,1,0));
-    nCells.push_back(Vector3D(1,-1,0));
+  if (EVEN(p.z)) {
+    nCells.push_back(Vector3D(1,0,1));
+    nCells.push_back(Vector3D(1,0,-1));
   } else {
-    nCells.push_back(Vector3D(-1,1,0));
-    nCells.push_back(Vector3D(-1,-1,0));
+    nCells.push_back(Vector3D(-1,0,1));
+    nCells.push_back(Vector3D(-1,0,-1));
   }
 
   return nCells;
