@@ -3,10 +3,13 @@
 
 #include <string>
 #include <vector>
+#include <cmath>
+
 #include "node.hpp"
 #include "vector3D.hpp"
 
 typedef enum Dimension_t {
+  UNKNOWN_DIMENSION = -1,
   ONE_D_DIMENSION = 1,
   TWO_D_DIMENSION = 2,
   THREE_D_DIMENSION = 3,
@@ -31,7 +34,7 @@ public:
   Node ** grid;
    
   Lattice();
-  Lattice(Vector3D& s, LatticeType t);
+  Lattice(Vector3D&s, LatticeType t);
   Lattice(const Lattice &l);
   virtual ~Lattice();
 
@@ -40,6 +43,7 @@ public:
   static LatticeType getType(std::string t);
 
   virtual Dimension getDimension() = 0;
+  static Dimension getDimension(LatticeType t);
   
   bool isIn(Vector3D &p); 
   int getIndex(Vector3D &p);
@@ -50,8 +54,10 @@ public:
   Vector3D getMiddle();
 
   std::vector<Vector3D> getNeighborCells(Node *n);
-  
   virtual std::vector<Vector3D> getRelativeConnectivity(Vector3D &p) = 0;
+
+  static Vector3D getSize(LatticeType t, int n);
+  static Vector3D getSize(LatticeType t, const Vector3D& s);
 };
 
 // 2D Lattice
@@ -132,6 +138,5 @@ public:
   
   std::vector<Vector3D> getRelativeConnectivity(Vector3D &p);
 };
-
 
 #endif

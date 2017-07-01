@@ -10,7 +10,9 @@ public:
   std::string robot;
   std::string topology;
   std::string parameter;
+  std::string occupancyRatio;
   std::string size;
+  
   bool colored;
   
   Arguments();

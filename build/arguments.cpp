@@ -5,12 +5,18 @@
 #include "robot.hpp"
 #include "topology.hpp"
 
+#define DEFAULT_OCCUPANCY_RATIO "0.5"
+
 using namespace std;
 
 Arguments::Arguments() {}
 
 Arguments::Arguments(int argc, char *argv[]) {
+  TopologyType topologyType = UNKNOWN_TOPOLOGY;
+  RobotType robotType = UNKNOWN_ROBOT;
 
+  occupancyRatio = "-1";
+  
   colored = false;
   
   argv++;
@@ -25,22 +31,17 @@ Arguments::Arguments(int argc, char *argv[]) {
       //argv++;
       break;
     case 't':
-      topology = argv[1];
-      argc--;
-      argv++;
-      parameter = argv[1];
-      argc--;
-      argv++;
+      readOne(topology,argc,&argv);
+      readOne(parameter,argc,&argv);      
       break;
     case 'r':
-      robot = argv[1];
-      argc--;
-      argv++;
+      readOne(robot,argc,&argv);
       break;
     case 's':
-      size = argv[1];
-      argc--;
-      argv++;
+      readOne(size,argc,&argv);
+      break;
+    case 'd':
+      readOne(occupancyRatio,argc,&argv);
       break;
     case 'c':
       colored = true;
@@ -60,7 +61,9 @@ Arguments::Arguments(int argc, char *argv[]) {
     cerr << "ERROR: No target robot specified" << endl;
     help();
   }
-  RobotType robotType = Robot::getType(robot);
+  
+  robotType = Robot::getType(robot);
+
   if (robotType == UNKNOWN_ROBOT) {
     cerr << "ERROR: Unknown robot type " << robot << endl;
     help();
@@ -70,7 +73,8 @@ Arguments::Arguments(int argc, char *argv[]) {
     cerr << "ERROR: No topology specified" << endl;
     help();
   }
-  TopologyType topologyType = Topology::getType(topology);
+  topologyType = Topology::getType(topology);
+ 
   if (topologyType == UNKNOWN_TOPOLOGY) {
     cerr << "ERROR: Unknown topology type " << topology << endl;
     help();
@@ -81,39 +85,18 @@ Arguments::Arguments(int argc, char *argv[]) {
     help();
   }
 
-  if (size == "") {
+  if (size == "" &&
+      topologyType == RANDOM_TOPOLOGY &&
+      occupancyRatio == "-1") {
+    occupancyRatio = DEFAULT_OCCUPANCY_RATIO;
+    cerr << "WARNING: no lattice size or occupancy ratio given. Will use default value." << endl;
+  }
+  
+  /*if (size == "" &&
+      topologyType == RANDOM_TOPOLOGY &&
+      (occupancyRatio < 0 || occupancyRatio > 1)) {
     cerr << "ERROR: No lattice size specified." << endl;
     help();
-  }
-  
-  /*
-  if (input == "") {
-    cerr << "ERROR: No input file" << endl;
-    help();
-  }
-
-  size_t lastDot = input.find_last_of(".");
-  string ext = input.substr(lastDot + 1);
-  if (ext != "xml") {
-    help();
-  }
-
-  if(target == "") {
-    cerr << "ERROR: No target lattice specified" << endl;
-    help();
-  }
-
-  LatticeType t = Lattice::getType(target);
-
-  if (t == UNKNOWN_LATTICE) {
-    cerr << "ERROR: Unknown target lattice " << target << endl;
-    help();
-  }
-  
-  if (output == "") {
-    size_t lastSlash = input.find_last_of("/\\");
-    string n =  input.substr(0, lastDot).substr(lastSlash+1);
-    output = n + ".aj";
     }*/
 }
 
@@ -128,6 +111,7 @@ Arguments::Arguments(const Arguments &a) {
   robot = a.robot;
   topology = a.topology;
   parameter = a.parameter;
+  occupancyRatio = a.occupancyRatio;
   size = a.size;
   colored = a.colored;
 }
@@ -135,16 +119,13 @@ Arguments::Arguments(const Arguments &a) {
 Arguments::~Arguments() { }
 
 void Arguments::help() {
-  cerr << "Usage: VisibleSimConfigGenerator -r <target robot system> -s <lattice size (3D)> -o <ouput xml file> -t <topology to generate> <topology parameter> [options]"<< endl;
+  cerr << "Usage: VisibleSimConfigGenerator -r <target robot system> -o <ouput xml file> -t <topology to generate> <topology parameters> [options]"<< endl;
 
   cerr << "Supported target robot systems(<target robot system>): " << endl;
   for (int i = 0; i < NUM_ROBOTS; i++) {
     cerr << "  " << Robot::typeShortName[i]
 	 << ": " << Robot::typeFullName[i] << endl;
   }
-
-  cerr << "Lattice size format:" << endl;
-  cerr << "  \"x,y,z\"" << endl;
   
   cerr << "Supported topologies (<topology to generate>): " << endl;
   for (int i = 0; i < NUM_TOPOLOGIES; i++) {
@@ -154,7 +135,10 @@ void Arguments::help() {
   }
 
   cerr <<"Options:" << endl;
-  cerr <<"-c: enable color" << endl;
-  cerr <<"-h: print this usage and exit" << endl;
+  cerr << "  -c: enable color" << endl;
+  cerr << "  -h: print this usage and exit" << endl;
+  cerr << "  -s \"x,y,z\": Lattice size 3D" << endl;
+  cerr << "  -d \"d\": Occupancy ratio (#cells/#modules, 0 < d <= 1), only for random configurations." << endl;
+
   exit(EXIT_SUCCESS);
 } 

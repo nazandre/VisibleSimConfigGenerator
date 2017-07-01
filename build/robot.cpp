@@ -36,6 +36,21 @@ RobotType Robot::getType(std::string t) {
   return UNKNOWN_ROBOT;
 }
 
+LatticeType Robot::getLatticeType(RobotType r) {
+  switch(r) {
+  case(BLINKYBLOCKS_ROBOT) :
+    return SIMPLE_CUBIC_LATTICE;
+  case(SMART_BLOCKS_ROBOT):
+    return SQUARE_LATTICE;
+  case(CATOMS2D_ROBOT):
+    return HEXAGONAL_LATTICE;
+  case(CATOMS3D_ROBOT):
+    return FACE_CENTERED_CUBIC_LATTICE;
+  default:
+    return UNKNOWN_LATTICE;
+  }
+}
+
 Vector3D&  Robot::getTypeVSFormatSize() {
   return typeVSFormatSize[type];
 }

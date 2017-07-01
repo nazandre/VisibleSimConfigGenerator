@@ -3,6 +3,7 @@
 
 #include <string>
 #include "vector3D.hpp"
+#include "lattice.hpp"
 
 typedef enum RobotType_t {
   UNKNOWN_ROBOT = -1,
@@ -30,7 +31,8 @@ public:
   static Vector3D defaultColor[];
   
   static RobotType getType(std::string t);
-
+  static LatticeType getLatticeType(RobotType r);
+  
   Vector3D& getTypeVSFormatSize();
   Vector3D& getTypeCompFormatSize();
   Vector3D& getDefaultColor();

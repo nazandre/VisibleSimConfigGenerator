@@ -46,6 +46,69 @@ LatticeType Lattice::getType(std::string t) {
   return UNKNOWN_LATTICE;
 }
 
+Dimension Lattice::getDimension(LatticeType t) {
+  switch (t) {
+  case(SQUARE_LATTICE):
+  case(HEXAGONAL_LATTICE):
+    return TWO_D_DIMENSION;
+  case(SIMPLE_CUBIC_LATTICE):
+  case(FACE_CENTERED_CUBIC_LATTICE):
+    return THREE_D_DIMENSION;
+  default:
+    return UNKNOWN_DIMENSION;
+  }
+}
+
+
+Vector3D Lattice::getSize(LatticeType t, int n) {
+  Vector3D s;
+  double root = 0;
+  Dimension d = getDimension(t);
+
+  if (d == TWO_D_DIMENSION) {
+    root = sqrt(n);
+  } else if (d == THREE_D_DIMENSION) {
+    root = pow(n,1./3.);
+  }
+  root += 1;
+  
+  switch (t) {
+  case(SQUARE_LATTICE):
+    s = Vector3D(root,root,1);
+    break;
+  case(HEXAGONAL_LATTICE):
+    s = Vector3D(root,1,root);
+    break;
+  case(SIMPLE_CUBIC_LATTICE):
+  case(FACE_CENTERED_CUBIC_LATTICE):
+    s = Vector3D(root,root,root);
+  break;
+  default:
+    s = Vector3D(0,0,0);
+  }
+  
+  return s;
+}
+
+Vector3D Lattice::getSize(LatticeType t, const Vector3D& s1) {
+  Vector3D s = s1;
+  
+  switch (t) {
+  case(SQUARE_LATTICE):
+    s.z = 1;
+    break;
+  case(HEXAGONAL_LATTICE):
+    s.y = 1;
+    break;
+  case(SIMPLE_CUBIC_LATTICE):
+  case(FACE_CENTERED_CUBIC_LATTICE):
+    break;
+  default:
+    s = Vector3D(0,0,0);
+  }
+  return s;
+}
+
 int Lattice::getIndex(Vector3D &p) {
   int index = p.x + (p.z*size.y + p.y)*size.x;
   //cout << "index: " << index << "(/total = " << size.x*size.y*size.z << ")" << endl;

@@ -37,6 +37,7 @@ void Generator::generate() {
 	 << topology.type << endl;
   }
 
+  cerr << "Mixing nodes id..." << endl;
   int n = configuration.getSize();
   mixNodes(n*n);
 }

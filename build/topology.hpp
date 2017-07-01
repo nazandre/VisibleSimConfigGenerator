@@ -2,6 +2,8 @@
 #define TOPOLOGY_H_
 
 #include <string>
+#include "vector3D.hpp"
+#include "lattice.hpp"
 
 typedef enum TopologyType_t
 {
@@ -26,6 +28,10 @@ public:
   static std::string typeShortName[];
   static std::string typeFullName[];
   static std::string parameterName[];
+
+  Vector3D getLatticeSize(LatticeType t, double occupancyRatio = 0.0);
+  void checkSize(LatticeType t, Vector3D& s);
+  
   static TopologyType getType(std::string t);
 };
 
