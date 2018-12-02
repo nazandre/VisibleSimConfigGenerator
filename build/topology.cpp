@@ -4,9 +4,9 @@
 
 using namespace std;
 
-string Topology::typeShortName[] = {"r","b","l"};
-string Topology::typeFullName[] = {"random","networkball","line"};
-string Topology::parameterName[] = {"size","radius","length"};
+string Topology::typeShortName[] = {"r","b","l","s","c"};
+string Topology::typeFullName[] = {"random","networkball","line","square","cube"};
+string Topology::parameterName[] = {"size","radius","length","side","side"};
 
 Topology::Topology() {}
 
@@ -37,6 +37,20 @@ Vector3D Topology::getLatticeSize(LatticeType t, double occupancyRatio) {
     // minimum x-size:
     // n
     return Vector3D(parameter,1,1);
+  case SQUARE_TOPOLOGY:
+    {
+      Vector3D s = Vector3D(parameter,
+			    parameter,1);
+      return Lattice::getSize(t,s);
+    }
+  case CUBE_TOPOLOGY:
+    {
+      // parameter
+      Vector3D s = Vector3D(parameter,
+			    parameter,
+			    parameter);
+      return Lattice::getSize(t,s);
+    }
   case BALL_TOPOLOGY:
     {
       // minimum size in all direction:
@@ -76,6 +90,7 @@ void Topology::checkSize(LatticeType t, Vector3D& s) {
 	   << endl;
       assert(false);
     }
+    break;
   case BALL_TOPOLOGY:
     {
       // minimum size in all direction:
@@ -88,6 +103,27 @@ void Topology::checkSize(LatticeType t, Vector3D& s) {
 	assert(false);
       }
     }
+    break;
+  case SQUARE_TOPOLOGY:
+    {
+      if ((parameter > size.x) ||
+	  (parameter > size.y) ||
+	  (size.z < 1) ) {
+	cerr << "ERROR: lattice side should be greater than (side,side,1) with side = " << parameter << endl;
+	assert(false);
+      }
+    }
+    break;
+  case CUBE_TOPOLOGY:
+    {
+      if ((parameter > size.x) ||
+	  (parameter > size.y) ||
+	  (parameter > size.z)) {
+	cerr << "ERROR: lattice side should be greater than (side,side,side) with side = " << parameter << endl;
+	assert(false);
+      }
+    }
+    break;
   case RANDOM_TOPOLOGY:
     {
       int cells = size.x*size.y*size.z;

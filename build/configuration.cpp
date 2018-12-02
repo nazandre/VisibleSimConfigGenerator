@@ -11,11 +11,12 @@ Configuration::Configuration() {
   colored = false;
 }
 
-Configuration::Configuration(Robot &r, Vector3D &s, bool c) {
+Configuration::Configuration(Robot &r, Vector3D &s, bool c, bool i) {
   robot = r;
   lattice = NULL;
   createLattice(s);
   colored = c;
+  notRandomizedIDs = i;
 }
 
 Configuration::Configuration(const Configuration &c) {
@@ -25,6 +26,7 @@ Configuration::Configuration(const Configuration &c) {
   lattice = NULL; // TODO
   //instantiateLattice();
   colored = c.colored;
+  notRandomizedIDs = c.notRandomizedIDs;
 }
 
 Configuration::~Configuration() {

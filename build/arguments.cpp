@@ -18,6 +18,7 @@ Arguments::Arguments(int argc, char *argv[]) {
   occupancyRatio = "-1";
   
   colored = false;
+  notRandomizedIDs = false;
   
   argv++;
   argc--;
@@ -45,6 +46,9 @@ Arguments::Arguments(int argc, char *argv[]) {
       break;
     case 'c':
       colored = true;
+      break;
+    case 'i':
+      notRandomizedIDs = true;
       break;
     case 'h':
       help();
@@ -135,10 +139,10 @@ void Arguments::help() {
   }
 
   cerr <<"Options:" << endl;
-  cerr << "  -c: enable color" << endl;
-  cerr << "  -h: print this usage and exit" << endl;
+  cerr << "  -h: Print this usage and exit" << endl;
+  cerr << "  -c: Enable color" << endl;
+  cerr << "  -i: Do not randomized IDs." << endl;
   cerr << "  -s \"x,y,z\": Lattice size 3D" << endl;
   cerr << "  -d \"d\": Occupancy ratio (#cells/#modules, 0 < d <= 1), only for random configurations." << endl;
-
   exit(EXIT_SUCCESS);
 } 

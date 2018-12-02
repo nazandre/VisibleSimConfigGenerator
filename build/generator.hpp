@@ -19,7 +19,9 @@ public:
   void generateRandom();
   void generateBall();
   void generateLine();
-
+  void generateSquare();
+  void generateCube();
+  
   void mixNodes(int p);
 };
 

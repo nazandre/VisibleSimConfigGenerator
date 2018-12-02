@@ -32,14 +32,22 @@ void Generator::generate() {
   case LINE_TOPOLOGY:
     generateLine();
     break;
+  case SQUARE_TOPOLOGY:
+    generateSquare();
+    break;
+  case CUBE_TOPOLOGY:
+    generateCube();
+    break;
   default:
     cerr << "ERROR: Unable to generate unknown topology type "
 	 << topology.type << endl;
   }
 
-  cerr << "Mixing nodes id..." << endl;
-  int n = configuration.getSize();
-  mixNodes(n*n);
+  if (!configuration.notRandomizedIDs) {
+    cerr << "Mixing nodes id..." << endl;
+    int n = configuration.getSize();
+    mixNodes(n*n);
+  }
 }
 
 void Generator::generateRandom() {
@@ -156,20 +164,16 @@ void Generator::generateLine() {
   Vector3D mColor = defaultColor;
   int id = 1;
   Node *node;
-  Vector3D position = configuration.getMiddle();
-  
-  position.x = 0;
- 
+  Vector3D position(0,0,0);
+
   cerr << "Generating a line configuration of length " << n << "..." << endl;
 
   if (configuration.colored) {
     mColor = Color::getRandom();
   }
-  node = new Node(id,position,mColor);
-  configuration.insert(node,position);
-  id++;
-  for (int i = 1; i < n; i++) {
-    position.x++;
+  
+  for (int i = 0; i < n; i++) {
+    position.x = i;
 #ifdef GENERATION_DEBUG
     cout << "insert at " << position << "..." << endl;
 #endif
@@ -186,6 +190,78 @@ void Generator::generateLine() {
   }
 }
 
+void Generator::generateSquare() {
+  int side = topology.parameter;
+  Vector3D &defaultColor = configuration.robot.getDefaultColor();
+  Vector3D mColor = defaultColor;
+  int id = 1;
+  Node *node;
+  Vector3D position(0,0,0);
+    
+  cerr << "Generating a square configuration of side " << side << "..." << endl;
+
+  if (configuration.colored) {
+    mColor = Color::getRandom();
+  }
+  
+  for (int i = 0; i < side; i++) {
+    position.x = i;
+    for (int j = 0; j < side; j++) {
+      position.y = j;
+#ifdef GENERATION_DEBUG
+      cout << "insert at " << position << "..." << endl;
+#endif
+      if (!configuration.lattice->isIn(position)) {
+	cerr << "ERROR: Lattice too small to create a square configuration with side " << side << " modules!" << endl;
+	exit(EXIT_FAILURE);
+      }
+      if (configuration.colored) {
+	mColor = Color::getRandom();
+      }
+      node = new Node(id,position,mColor);
+      configuration.insert(node,position);
+      id++;
+    }
+  }
+}
+
+void Generator::generateCube() {
+  int side = topology.parameter;
+  Vector3D &defaultColor = configuration.robot.getDefaultColor();
+  Vector3D mColor = defaultColor;
+  int id = 1;
+  Node *node;
+  Vector3D position(0,0,0);
+    
+  cerr << "Generating a cube configuration of side " << side << "..." << endl;
+
+  if (configuration.colored) {
+    mColor = Color::getRandom();
+  }
+  
+  for (int i = 0; i < side; i++) {
+    position.x = i;
+    for (int j = 0; j < side; j++) {
+      position.y = j;
+      for (int k = 0; k < side; k++) {
+	position.z = k;
+#ifdef GENERATION_DEBUG
+	cout << "insert at " << position << "..." << endl;
+#endif
+	if (!configuration.lattice->isIn(position)) {
+	  cerr << "ERROR: Lattice too small to create a cube configuration of side " << side << " modules!" << endl;
+	  exit(EXIT_FAILURE);
+	}
+	if (configuration.colored) {
+	  mColor = Color::getRandom();
+	}
+	node = new Node(id,position,mColor);
+	configuration.insert(node,position);
+	id++;
+      }
+    }
+  }
+}
 
 void Generator::mixNodes(int p) {
   random_device r;

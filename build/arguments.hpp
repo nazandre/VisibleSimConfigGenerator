@@ -13,6 +13,7 @@ public:
   std::string occupancyRatio;
   std::string size;
   
+  bool notRandomizedIDs;
   bool colored;
   
   Arguments();

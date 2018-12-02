@@ -16,9 +16,10 @@ public:
   std::vector<Node*> nodes; 
   Lattice *lattice;
   bool colored;
+  bool notRandomizedIDs;
 
   Configuration();
-  Configuration(Robot &r, Vector3D& s, bool c);
+  Configuration(Robot &r, Vector3D& s, bool c, bool i);
   Configuration(const Configuration &c);
   ~Configuration();
 

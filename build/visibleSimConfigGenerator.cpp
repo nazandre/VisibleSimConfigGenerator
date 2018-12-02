@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
   cerr << ", parameter: " << arguments.parameter << endl;
   cerr << "Output: " << arguments.output << endl;
   cerr << "Color: " << boolalpha << arguments.colored << noboolalpha << endl;
+  cerr << "Not randomized IDs: " << boolalpha << arguments.notRandomizedIDs << noboolalpha << endl;
   
   // Create Configuration
   Robot robot(Robot::getType(arguments.robot));
@@ -35,7 +36,7 @@ int main(int argc, char *argv[]) {
   }
   cerr << "Lattice size: " << size << endl;
   
-  Configuration configuration(robot,size,arguments.colored);
+  Configuration configuration(robot,size,arguments.colored,arguments.notRandomizedIDs);
 
   // Generate configuration topology
   Generator generator(configuration,topology);

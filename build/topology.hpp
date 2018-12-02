@@ -11,7 +11,9 @@ typedef enum TopologyType_t
   RANDOM_TOPOLOGY = 0,
   BALL_TOPOLOGY = 1,
   LINE_TOPOLOGY = 2,
-  NUM_TOPOLOGIES = 3
+  SQUARE_TOPOLOGY = 3,
+  CUBE_TOPOLOGY = 4,
+  NUM_TOPOLOGIES = 5
 } TopologyType;
 
 class Topology {
